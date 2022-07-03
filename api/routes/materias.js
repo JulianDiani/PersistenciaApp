@@ -8,7 +8,9 @@ router.get("/", (req, res) => {
     .findAll({
       
       attributes: ["nombre","id_carrera"],
-      include:[{as:'Carrera-Relacionada', model:models.carrera, attributes: ["id","nombre"]}],
+      include:[{as:'Carrera-Relacionada', model:models.carrera, attributes: ["id","nombre"]}/*,
+      {as: 'Alumnos-de-la-materia', model:models.alumno, attributes: ["id","nombre"]}*/
+    ],
       order: [  ['nombre', 'ASC']] // ORDENAMOS X ORDEN ALFABETICO
     })
     .then(materias => res.send(materias))

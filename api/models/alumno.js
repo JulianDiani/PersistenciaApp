@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
         as: "Carrera-Relacionada", 
         foreignKey: "id_carrera"
       })
+   
 
   };
   return alumno;

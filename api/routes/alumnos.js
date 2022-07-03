@@ -10,7 +10,8 @@ router.get("/", (req, res) => {
   models.alumno
     .findAll({
       attributes: ["id" , "nombre" , "id_carrera","dni"] ,
-      include: [{ as: "Carrera-Relacionada", model: models.carrera, attributes: [ "id", "nombre"]}],
+      include: [{ as: "Carrera-Relacionada", model: models.carrera, attributes: [ "id", "nombre"]}
+    ],
       order: [  ['nombre', 'ASC']] // ORDENAMOS X ORDEN ALFABETICO
     //  offset: (paginaActual-1) * limite,
       //limit: limite
