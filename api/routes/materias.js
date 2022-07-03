@@ -4,14 +4,20 @@ var models = require("../models");
 
 router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
+  const paginaActual = parseInt(req.query.numeroDePagina);
+  const limite = parseInt(req.query.cantidadAVer);
+
   models.materia
     .findAll({
       
-      attributes: ["nombre","id_carrera"],
+      attributes: ["nombre"],
       include:[{as:'Carrera-Relacionada', model:models.carrera, attributes: ["id","nombre"]}/*,
       {as: 'Alumnos-de-la-materia', model:models.alumno, attributes: ["id","nombre"]}*/
     ],
-      order: [  ['nombre', 'ASC']] // ORDENAMOS X ORDEN ALFABETICO
+      order: [  ['nombre', 'ASC']],
+      offset: (paginaActual-1) * limite,
+      limit: limite
+ // ORDENAMOS X ORDEN ALFABETICO
     })
     .then(materias => res.send(materias))
     .catch(() => res.sendStatus(500));
