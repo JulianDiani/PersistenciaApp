@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var models = require("../models");
+var authServices = require('../auth/authservices');
 
 router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
@@ -19,7 +20,7 @@ router.get("/", (req, res) => {
     .catch(() => res.sendStatus(500));
 });
 
-router.post("/", (req, res) => {
+router.post("/",authServices.verificacion, (req, res) => {
   models.carrera
     .create({ nombre: req.body.nombre })
     .then(carrera => res.status(201).send({ id: carrera.id }))
@@ -52,7 +53,7 @@ router.get("/:id", (req, res) => {
   });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id",authServices.verificacion, (req, res) => {
   const onSuccess = carrera =>
     carrera
       .update({ nombre: req.body.nombre }, { fields: ["nombre"] })
@@ -73,7 +74,7 @@ router.put("/:id", (req, res) => {
   });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id",authServices.verificacion, (req, res) => {
   const onSuccess = carrera =>
     carrera
       .destroy()

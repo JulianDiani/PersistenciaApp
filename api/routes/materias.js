@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var models = require("../models");
+var authServices = require('../auth/authservices');
 
 router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
@@ -23,7 +24,7 @@ router.get("/", (req, res) => {
     .catch(() => res.sendStatus(500));
 });
 
-router.post("/", (req, res) => {
+router.post("/",authServices.verificacion, (req, res) => {
   models.materia
     .create({ nombre: req.body.nombre,id_carrera: req.body.id_carrera })
     .then(materia => res.status(201).send({ id: materia.id }))
@@ -56,7 +57,7 @@ router.get("/:id", (req, res) => {
   });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", authServices.verificacion,(req, res) => {
   const onSuccess = materia =>
     materia
       .update({ nombre: req.body.nombre }, { fields: ["nombre"] })
@@ -77,7 +78,7 @@ router.put("/:id", (req, res) => {
   });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id",authServices.verificacion, (req, res) => {
   const onSuccess = materia =>
     materia
       .destroy()

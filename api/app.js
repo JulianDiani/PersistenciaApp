@@ -6,6 +6,7 @@ var logger = require('morgan');
 var carrerasRouter = require('./routes/carreras');
 var materiasRouter = require('./routes/materias');
 var alumnosRouter = require('./routes/alumnos');
+var empleadosAdminRouter=require('./routes/empleadosAdmin');
 //var loginRouter=require('./routes/login');
 const jwt=require('jsonwebtoken');
 const keys= require('./settings/keys')
@@ -31,10 +32,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/car', carrerasRouter);
 app.use('/mat', materiasRouter);
 app.use('/alu', alumnosRouter);
+app.use('/emp', empleadosAdminRouter);
 //app.use('/login', loginRouter);
 
 // catch 404 and forward to error handler
-app.post('/log',(req,res)=>{
+/*app.post('/log',(req,res)=>{
   if (req.body.usuario=='admin'&& req.body.password=='admin'){
     const payload={
         check:true
@@ -78,10 +80,10 @@ verificacion.use((req,res,next)=>{
     })
   }
 
-});
-app.get('/info',verificacion,(req,res)=>{
+});*/
+/*app.get('/info',verificacion,(req,res)=>{
   res.json('hola')
-})
+})*/
 
 app.use(function(req, res, next) {
   next(createError(404));

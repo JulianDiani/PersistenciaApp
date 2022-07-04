@@ -1,8 +1,7 @@
 var express = require("express");
 var router = express.Router();
 var models = require("../models");
-var app = require('../app');
-
+var authServices = require('../auth/authservices');
 
 router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
@@ -23,7 +22,7 @@ router.get("/", (req, res) => {
     .catch(() => res.sendStatus(500));
 });
 
-router.post("/", (req, res) => {
+router.post("/",authServices.verificacion, (req, res) => {
   models.alumno
     .create({ nombre: req.body.nombre , id_carrera: req.body.id_carrera,dni: req.body.dni })
     .then(alumno => res.status(201).send({ id: alumno.id }))
@@ -56,7 +55,7 @@ router.get("/:id", (req, res) => {
   });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id",authServices.verificacion, (req, res) => {
   const onSuccess = alumno =>
     alumno
       .update({ nombre: req.body.nombre, id_carrera: req.body.id_carrera,dni:req.body.dni },{ fields: ["nombre", "id_carrera"] })
@@ -77,7 +76,7 @@ router.put("/:id", (req, res) => {
   });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", authServices.verificacion,(req, res) => {
   const onSuccess = alumno =>
     alumno
       .destroy()
@@ -89,5 +88,6 @@ router.delete("/:id", (req, res) => {
     onError: () => res.sendStatus(500)
   });
 });
+
 
 module.exports = router;
