@@ -12,9 +12,9 @@ router.get("/", (req, res) => {
       attributes: ["id", "nombre"],
       include:[{as:'materias-de-la-carrera', model:models.materia, attributes: ["id","nombre"]},
       {as: 'Alumnos-de-la-carrera', model:models.alumno, attributes: ["id","nombre","dni"]}],
-      order: [  ['nombre', 'ASC']],
+      order: [  ['id', 'ASC']],//Ordenados por ID 
       offset: (paginaActual-1) * limite,
-      limit: limite // ORDENAMOS X ORDEN ALFABETICO
+      limit: limite 
     })
     .then(carreras => res.send(carreras))
     .catch(() => res.sendStatus(500));
@@ -39,6 +39,8 @@ const findCarrera = (id, { onSuccess, onNotFound, onError }) => {
   models.carrera
     .findOne({
       attributes: ["id", "nombre"],
+      include:[{as:'materias-de-la-carrera', model:models.materia, attributes: ["id","nombre"]},
+      {as: 'Alumnos-de-la-carrera', model:models.alumno, attributes: ["id","nombre","dni"]}],
       where: { id }
     })
     .then(carrera => (carrera ? onSuccess(carrera) : onNotFound()))

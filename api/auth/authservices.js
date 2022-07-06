@@ -1,6 +1,4 @@
 var express = require("express");
-var router = express.Router();
-var models = require("../models");
 //var app = require('../app');
 const jwt=require('jsonwebtoken');
 const keys= require('../settings/keys')

@@ -15,10 +15,10 @@ router.get("/", (req, res) => {
       include:[{as:'Carrera-Relacionada', model:models.carrera, attributes: ["id","nombre"]}/*,
       {as: 'Alumnos-de-la-materia', model:models.alumno, attributes: ["id","nombre"]}*/
     ],
-      order: [  ['nombre', 'ASC']],
+      order: [  ['id_carrera', 'ASC']],// ORDENAMOS POR CARRERA
       offset: (paginaActual-1) * limite,
       limit: limite
- // ORDENAMOS X ORDEN ALFABETICO
+ 
     })
     .then(materias => res.send(materias))
     .catch(() => res.sendStatus(500));
@@ -43,6 +43,7 @@ const findMateria = (id, { onSuccess, onNotFound, onError }) => {
   models.materia
     .findOne({
       attributes: ["id", "nombre","id_carrera"],
+      include:{as:'Carrera-Relacionada', model:models.carrera, attributes: ["id","nombre"]},
       where: { id }
     })
     .then(materia => (materia ? onSuccess(materia) : onNotFound()))

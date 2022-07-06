@@ -14,7 +14,7 @@ router.get("/", (req, res) => {
       attributes: ["id" , "nombre","dni"] ,
       include: [{ as: "Carrera-Relacionada", model: models.carrera, attributes: [ "id", "nombre"]}
     ],
-      order: [  ['nombre', 'ASC']], // ORDENAMOS X ORDEN ALFABETICO
+      order: [  ['dni', 'ASC']], // ORDENAMOS X DNI
       offset: (paginaActual-1) * limite,
       limit: limite
     })
@@ -41,6 +41,7 @@ const findAlumno = (id, { onSuccess, onNotFound, onError }) => {
   models.alumno
     .findOne({
       attributes: ["id", "nombre", "id_carrera","dni"],
+      include: { as: "Carrera-Relacionada", model: models.carrera, attributes: [ "id", "nombre"]},
       where: { id }
     })
     .then(alumno => (alumno ? onSuccess(alumno) : onNotFound()))
